@@ -30,13 +30,17 @@ class StockBuyer {
         return this
     }
     def getEach() {
-        canteen.buyStock(ingredientName, ingredientAmount, ingredientCost)
+        canteen.addStock(ingredientName, ingredientAmount, ingredientCost)
         ingredientName = null
     }
     def getTotal() {
         ingredientCost = ingredientCost/ingredientAmount
-        canteen.buyStock(ingredientName, ingredientAmount, ingredientCost)
+        canteen.addStock(ingredientName, ingredientAmount, ingredientCost)
         ingredientName = null
+    }
+    
+    def dump(name, amount = 0) {
+        canteen.deleteStock(name,amount)
     }
     
     def getPrint() {
@@ -114,8 +118,7 @@ class Canteen {
             transactionLog.pop()
         }
     }
-    def buyStock(name, amount, price) {
-        
+    def addStock(name, amount, price) {
         name = name.toLowerCase()
         if(ingredientStock.get(name) == null) {
             ingredientStock[name] = 0
@@ -127,9 +130,18 @@ class Canteen {
             amount: amount,
             costPerItem: price
         )
-        
     }
-   
+    def deleteStock(name, amount) {
+        name = name.toLowerCase()
+        if(ingredientStock.get(name) != null) {
+            if(ingredientStock.get(name) < amount) {
+                ingredientStock[name] = 0
+            } else {
+                ingredientStock[name] -= amount
+            }
+        }
+    }
+    
     def getAudit() {
         doAudit(this)
     }
@@ -175,6 +187,7 @@ Canteen.process {
     stock {
         buy "rice", 100 at 1000 each
         buy "chicken meat", 10 at 10000 total
+        dump "rice", 50
         print
     }
     
