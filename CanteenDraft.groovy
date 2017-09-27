@@ -181,3 +181,41 @@ Canteen.process {
     audit
 }
 
+/**
+Canteen.process {
+    stock {
+        buy "rice", 100 at 1000 each
+        buy "chicken meat", 10 at 10000 total
+        
+        dump "rice", 10
+        print
+    }
+    
+    menu {
+        add "nasi goreng" {
+            ingredient "rice", 10
+            ingredient "soy sauce", 5
+            price 1000
+        }
+        
+        delete "nasi goreng"
+    }
+    
+    order {
+        "nasi goreng" 2
+        "es teh" 1
+        takeaway
+    }
+    
+    order {
+        for 2 person
+        "nasi goreng" 2
+        "es teh" 1
+        dinein
+    }
+    
+    leave 1 person
+
+    audit
+}
+ * */
