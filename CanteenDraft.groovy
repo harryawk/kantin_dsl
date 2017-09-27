@@ -68,19 +68,16 @@ class Order {
 
 class MenuOrderer {
     Canteen canteen
-    List<Order> orders
+    List<Order> orders = []
     int chairUsed
 
-    def methodMissing(name, count) {
-        println 'name : ' + name
-        println 'count : ' + count
+    def methodMissing(String name, args) {
+        int count = args ? args[0] : 0
         Order o = new Order(menuName: name, menuCount: count)
-        println 'name : ' + o.name
-        println 'count : ' + o.count
         orders << o
     }
 
-    def for(count) {
+    def of(count) {
         chairUsed = count
     }
 
@@ -92,6 +89,7 @@ class MenuOrderer {
     def getDinein() {
         canteen.orderStock(orders, chairUsed)
     }
+
 }
 
 class FoodIngredient {
@@ -176,11 +174,17 @@ class Canteen {
     }
 
     def orderStock(orders, chairUsed) {
-        this.chairs = chairUsed
+        this.chairs -= chairUsed
         for(order in orders) {
+            //TODO: Insert costPerItem according to menu's cost
+            //TODO: Insert decreasing stock operation
             transactionLog.last().items << new TransactionItem(
-                
+                name: order.menuName.toLowerCase(),
+                amount: order.menuCount,
+                // dummy value
+                costPerItem: 1000
             )
+            
         }
     }
 
@@ -250,6 +254,9 @@ class Canteen {
     
 }
 
+// use (IntExtension) {
+//     2.of "nasi goreng"
+// }
 Canteen.process {
     stock {
         buy "rice", 100 at 1000 each
@@ -259,9 +266,10 @@ Canteen.process {
     }
 
     order {
-        "nasi goreng", 2
-        "es teh", 2
-        takeaway
+        of 2
+        "nasi goreng" 2
+        "es teh" 3
+        dinein
     }
     
     audit
