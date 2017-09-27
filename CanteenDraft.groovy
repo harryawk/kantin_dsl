@@ -38,6 +38,23 @@ class StockBuyer {
         canteen.buyStock(ingredientName, ingredientAmount, ingredientCost)
         ingredientName = null
     }
+    
+    def getPrint() {
+        doPrint(canteen)
+    }
+    private static doPrint(canteen) {
+        def writer = new StringWriter()
+        def xml = new MarkupBuilder(writer)
+        
+        xml.stock {
+            for(e in canteen.ingredientStock) {
+                "${e.key}" "${e.value}"
+            }
+        }
+        
+        println writer
+   }
+    
 }
 
 class FoodIngredient {
@@ -158,6 +175,7 @@ Canteen.process {
     stock {
         buy "rice", 100 at 1000 each
         buy "chicken meat", 10 at 10000 total
+        print
     }
     
     audit
