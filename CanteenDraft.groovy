@@ -61,6 +61,39 @@ class StockBuyer {
     
 }
 
+class Order {
+    String menuName
+    int menuCount
+}
+
+class MenuOrderer {
+    Canteen canteen
+    List<Order> orders
+    int chairUsed
+
+    def methodMissing(name, count) {
+        println 'name : ' + name
+        println 'count : ' + count
+        Order o = new Order(menuName: name, menuCount: count)
+        println 'name : ' + o.name
+        println 'count : ' + o.count
+        orders << o
+    }
+
+    def for(count) {
+        chairUsed = count
+    }
+
+    def getTakeaway() {
+        chairUsed = 0
+        canteen.orderStock(orders, chairUsed)
+    }
+
+    def getDinein() {
+        canteen.orderStock(orders, chairUsed)
+    }
+}
+
 class FoodIngredient {
     String name
     int amount
@@ -118,7 +151,41 @@ class Canteen {
             transactionLog.pop()
         }
     }
+
+    def order(closure) {
+        MenuOrderer m = new MenuOrderer(canteen: this)
+        closure.delegate = m
+        closure.resolveStrategy = Closure.DELEGATE_ONLY
+        
+        def trans = new Transaction(
+            type: "Ordered Menu",
+            items: [],
+            timestamp: new Date(), 
+            totalCost: 0,
+        )
+        transactionLog << trans
+        
+        closure.call()
+        
+        for(item in transactionLog.last().items) {
+            transactionLog.last().totalCost += item.costPerItem*item.amount
+        }
+        if(transactionLog.last().totalCost == 0) {
+            transactionLog.pop()
+        }
+    }
+
+    def orderStock(orders, chairUsed) {
+        this.chairs = chairUsed
+        for(order in orders) {
+            transactionLog.last().items << new TransactionItem(
+                
+            )
+        }
+    }
+
     def addStock(name, amount, price) {
+        
         name = name.toLowerCase()
         if(ingredientStock.get(name) == null) {
             ingredientStock[name] = 0
@@ -190,6 +257,12 @@ Canteen.process {
         dump "rice", 50
         print
     }
+
+    order {
+        "nasi goreng", 2
+        "es teh", 2
+        takeaway
+    }
     
     audit
 }
@@ -197,7 +270,7 @@ Canteen.process {
 /**
 Canteen.process {
     stock {
-        buy "rice", 100 at 1000 each
+        buy("rice", 100).at(1000).each()
         buy "chicken meat", 10 at 10000 total
         
         dump "rice", 10
