@@ -120,6 +120,10 @@ class Food {
         closure.call()
         canteen.addFoodToMenu(name,this)
     }
+    
+    def delete(name) {
+        canteen.deleteFoodInMenu(name)
+    }
 }
 
 class Canteen {
