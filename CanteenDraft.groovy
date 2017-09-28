@@ -1,4 +1,10 @@
-package Groovy
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package canteen.dsl
 
 import groovy.xml.MarkupBuilder
 
@@ -96,9 +102,24 @@ class FoodIngredient {
     String name
     int amount
 }
+
 class Food {
-    FoodIngredient[] ingredients
+    Canteen canteen
+    List<FoodIngredient> ingredients = []
     int cost
+    
+    def ingredient(name, amount){
+        ingredients << (new FoodIngredient(name:name,amount:amount))
+    }
+    
+    def price(amount){
+        cost = amount
+    }
+    
+    def add(name, closure){
+        closure.call()
+        canteen.addFoodToMenu(name,this)
+    }
 }
 
 class Canteen {
@@ -172,7 +193,30 @@ class Canteen {
             transactionLog.pop()
         }
     }
-
+    
+    def menu(closure) {
+        Food f = new Food(canteen:this)
+        closure.delegate = f
+        closure.resolveStrategy = Closure.DELEGATE_ONLY
+        
+        closure.call()
+        
+    }
+    
+    def addFoodToMenu(name, food){
+        name = name.toLowerCase()
+        if(foodMenu.get(name) == null) {
+            foodMenu[name] = food
+        }
+    }
+    
+    def deleteFoodInMenu(name) {
+        name = name.toLowerCase()
+        if(foodMenu.get(name) != null) {
+            foodMenu.remove(name)
+        }
+    }
+    
     def orderStock(orders, chairUsed) {
         this.chairs -= chairUsed
         for(order in orders) {
