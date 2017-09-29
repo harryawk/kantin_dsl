@@ -204,7 +204,6 @@ class Canteen {
         closure.resolveStrategy = Closure.DELEGATE_ONLY
         
         closure.call()
-        
     }
     
     def addFoodToMenu(name, food){
@@ -311,6 +310,16 @@ Canteen.process {
         buy "chicken meat", 10 at 10000 total
         dump "rice", 50
         print
+    }
+    
+    menu {
+        add "nasi goreng", {
+            ingredient "rice", 10
+            ingredient "soy sauce", 5
+            price 1000
+        }
+        
+        //delete "nasi goreng"
     }
 
     order {
