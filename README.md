@@ -1,5 +1,11 @@
 # DSL Kantin
 
+By:
+K-02
+* 13514030 Aditio Pangestu
+* 13514036 Harry Alvin Waidan Kefas
+* 13514104 Fairuz Astra Pratama
+
 ## Grammar
 
 Untuk memudahkan pemahaman terhadap dsl yang kami buat. Akan ditampilkan contoh penggunaanya.
