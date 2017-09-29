@@ -71,10 +71,10 @@ Ada tiga jenis operasi yang dapat dilakukan dalam scope "stock", diantaranya:
 Berikut adalah contoh penggunaan fitur manajemen stok,
 
     stock {
-        buy "rice", 100 at 1000 each			// Menambah stok 100 "rice" dengan harga 1000 per unitnya
-        buy "chicken meat", 10 at 10000 total	// Menambah stok 10 "chicken meat" dengan harga total 10000
-        dump "rice", 50							// Mengurangi stok "rice" sebanyak 50
-        print									// Mengeprint kondisi stok
+        buy "rice", 100 at 1000 each		    // Menambah stok 100 "rice" dengan harga 1000 per unitnya
+        buy "chicken meat", 10 at 10000 total   // Menambah stok 10 "chicken meat" dengan harga total 10000
+        dump "rice", 50						    // Mengurangi stok "rice" sebanyak 50
+        print								    // Mengeprint kondisi stok
     }
 	
 	// Hasil ekseskusi perintah diatas
@@ -131,8 +131,8 @@ Berikut adalah contoh penggunaan fitur manajemen menu,
     }
 
     //Hasil eksekusi perintah di atas
-
-    DONE: nasi goreng has been added                                                                                       DONE: nasi bakar has been added
+    DONE: nasi goreng has been added
+    DONE: nasi bakar has been added
     DONE: nasi bakar has been deleted
     <menu>
         <Food>
