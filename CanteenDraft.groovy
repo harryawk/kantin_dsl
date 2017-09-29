@@ -319,7 +319,7 @@ Canteen.process {
             price 1000
         }
         
-        //delete "nasi goreng"
+        delete "nasi goreng"
     }
 
     order {
