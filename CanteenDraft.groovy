@@ -221,13 +221,25 @@ class Canteen {
     }
     
     def orderStock(orders, chairUsed) {
-        this.chairs -= chairUsed
+        if (this.chairs >= chairUsed) {
+            this.chairs -= chairUsed
+        } else {
+            println 'Order cancelled: chairs not sufficient.'
+            return
+        }
         for(order in orders) {
             //TODO: Insert costPerItem according to menu's cost
             //TODO: Insert decreasing stock operation
+            String menuName = order.menuName.toLowerCase()
+            int menuCount = order.menuCount
+            if (foodMenu.get(menuName) == null) {
+                foodMenu[menuName] = 0
+            }
+            foodMenu[menuName] += menuCount
+
             transactionLog.last().items << new TransactionItem(
-                name: order.menuName.toLowerCase(),
-                amount: order.menuCount,
+                name: menuName,
+                amount: menuCount,
                 // dummy value
                 costPerItem: 1000
             )
