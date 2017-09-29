@@ -123,4 +123,4 @@ Berikut adalah contoh penggunaan fitur manajemen menu,
 
 
 ### Pemesanan
-tulis di sini
+Pemesanan / *order* merupakan daftar makanan atau minuman yang dipesan / di-*order* oleh pelanggan. Suatu pemesanan / *order* memiliki jenis, diantaranya *takeaway* dan *dine-in*. Pemesanan / *order* jenis *dine-in* harus memberitahukan jumlah tempat makan yang hendak digunakan.
