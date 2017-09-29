@@ -21,8 +21,6 @@ process {
         "nasi goreng" 6
         dinein
     }
-
-    printRemainder
     
-    // audit
+    audit
 }

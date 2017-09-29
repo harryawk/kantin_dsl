@@ -442,8 +442,6 @@ Canteen.process {
         "es teh" 1
         dinein
     }
-
-    printRemainder
     
     // audit
 }

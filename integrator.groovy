@@ -26,8 +26,11 @@ def binding = new Binding([
 ])
 
 def shell = new GroovyShell(binding, configuration)
-def filename = this.args ? this.args[0] : 'client.groovy'
-println filename
-shell.evaluate(
-    new File(filename)
-)
+def filename = this.args ? this.args[0] : 'none'
+if (filename == 'none') {
+    println 'Tidak ada file yang berisi penggunaan DSL Kantin'
+} else {
+    shell.evaluate(
+        new File(filename)
+    )
+}
