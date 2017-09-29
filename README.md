@@ -9,6 +9,17 @@ Pada kesempatan kali ini, kami membuat dsl untuk kantin yang ada di ITB mengguna
 3. Pemesanan
 4. Pencatatan Transaksi.
 
+Untuk mencoba DSL, lakukan langkah berikut.
+1. Kompilasi CanteenDraft.groovy
+Hal ini dapat dilakukan dengan menjalankan *command* berikut.
+```
+    groovyc CanteenDraft.groovy
+```
+2. Memasukkan penggunaan DSL ke suatu file berekstensi .groovy
+3. Meng-*interpret* integrator.groovy dengan menambahkan nama file (dengan ekstensi) yang dibuat pada langkah kedua dengan menjalankan *command* berikut. (Pada contoh ini, nama file yang dibuat di langkah 2 adalah client.groovy)
+```
+    groovy integration.groovy client.groovy
+```
 Untuk memudahkan pemahaman terhadap dsl yang kami buat. Akan ditampilkan contoh penggunaanya.
 
 	Canteen.process {
@@ -44,6 +55,13 @@ Pada source code di atas, perintah untuk menjalankan 4 poin yang menjadi batasan
         Canteen.process {
 	        // Input command here
 	    }
+        
+akan tetapi, `Canteen.process` juga dapat diganti dengan `process` saja seperti berikut
+
+        process {
+	        // Input command here
+	    }
+        
 
 ### Manajemen Stok
 Stok merupakan pasangan nama dan jumlah bahan baku yang disimpan di kantin, dimana nama merupakan *identifier* yang akan digunakan untuk mengaksesnya. Manajemen stok dapat dilaksanakan dengan menuliskan perintah di dalam scope "stock" seperti berikut
@@ -149,7 +167,35 @@ Berikut adalah contoh penggunaan fitur manajemen menu,
 
 
 ### Pemesanan
-Pemesanan / *order* merupakan daftar makanan atau minuman yang dipesan / di-*order* oleh pelanggan. Suatu pemesanan / *order* memiliki jenis, diantaranya *takeaway* dan *dine-in*. Pemesanan / *order* jenis *dine-in* harus memberitahukan jumlah tempat makan yang hendak digunakan.
+Pemesanan / *order* merupakan daftar makanan atau minuman yang dipesan / di-*order* oleh pelanggan. Suatu pemesanan / *order* memiliki jenis, diantaranya *takeaway* dan *dine-in*. Pemesanan / *order* jenis *dine-in* harus memberitahukan jumlah tempat makan yang hendak digunakan. 
+
+Untuk menambahkan *order*, cara pemanggilannya:
+```
+	order {
+    	// input orders here...
+    }
+```
+
+Berikut adalah salah satu contoh perintah untuk mengorder 6 unit menu "nasi goreng" yang akan dimakan di kantin menggunakan 2 unit tempat makan.
+
+	order {
+        of 2
+        "nasi goreng" 6
+        dinein
+    }
+
+Selain *dinein*, order juga dapat *takeaway* tanpa mendefinisikan jumlah penggunaan tempat makan di kantin. Contohnya adalah seperti berikut.
+
+	order {
+        "nasi goreng" 6
+        takeaway
+    }
+
+Saat order, apabila order tidak dapat disediakan (habis stok), maka akan ditampilkan pesan seperti berikut.
+
+	Order ditolak karena stok bahan baku tidak cukup
+    
+    
 
 ### Pencatatan Transaksi
 Transaksi merupakan pembayaran yang dilakukan oleh pelanggan dan pembayaran untuk bahan baku. Pencatatan transaksi akan menampilkan seluruh daftar transaksi yang telah terjadi. Cara pemanggilannya:
