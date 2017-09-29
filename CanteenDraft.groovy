@@ -213,7 +213,7 @@ class Canteen {
         def trans = new Transaction(
             type: "Ordered Menu",
             items: [],
-            timestamp: new Date(), 
+            timestamp: new Date(),
             totalCost: 0,
         )
         transactionLog << trans
@@ -294,21 +294,28 @@ class Canteen {
                 isIgnore = false
                 this.chairs += chairUsed
                 break
-            }
-            // If every ingredient stock is exist
-            for (ingredient in foodMenu[menuName].ingredients) {
-                // update stock
-                ingredientStock[ingredient.name] -= ingredient.amount * menuCount
-            }
+            } else {
+                // println 'Else'
+                // println ingredientStock
+                // If every ingredient stock is exist
+                for (ingredient in foodMenu[menuName].ingredients) {
+                    // update stock
+                    // println foodMenu[menuName].ingredients
+                    // println menuName
+                    // println menuCount
+                    // println ingredient.name
+                    ingredientStock[ingredient.name] -= ingredient.amount * menuCount
+                }
 
-            // define cost
-            int menuCost = foodMenu[menuName].cost * menuCount
+                // define cost per item
+                int menuCost = foodMenu[menuName].cost
 
-            transactionLog.last().items << new TransactionItem(
-                name: menuName,
-                amount: menuCount,
-                costPerItem: menuCost
-            )
+                transactionLog.last().items << new TransactionItem(
+                    name: menuName,
+                    amount: menuCount,
+                    costPerItem: menuCost
+                )
+            }
             
         }
     }
@@ -395,6 +402,8 @@ Canteen.process {
         buy "rice", 100 at 1000 each
         buy "chicken meat", 10 at 10000 total
         buy "ketchup", 100 at 1000 each
+        buy "air", 100 at 100 each
+        buy "teh", 100 at 100 each
         dump "rice", 50
         print
     }
@@ -402,6 +411,12 @@ Canteen.process {
     menu {
         add "nasi goreng", {
             ingredient "rice", 10
+            price 10000
+        }
+        
+        add "es teh", {
+            ingredient "air", 10
+            ingredient "teh", 10
             price 1000
         }
         
@@ -412,14 +427,19 @@ Canteen.process {
         }
         
         delete "nasi bakar"
+    }
 
-        print
+    order {
+        of 2
+        "nasi goreng" 6
+        "es teh" 2
+        dinein
     }
 
     order {
         of 2
         "nasi goreng" 2
-        "es teh" 3
+        "es teh" 1
         dinein
     }
 
