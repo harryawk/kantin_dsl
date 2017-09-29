@@ -255,21 +255,51 @@ class Canteen {
             println 'Order cancelled: chairs not sufficient.'
             return
         }
+
         for(order in orders) {
-            //TODO: Insert costPerItem according to menu's cost
-            //TODO: Insert decreasing stock operation
             String menuName = order.menuName.toLowerCase()
             int menuCount = order.menuCount
+            boolean isIgnore = false
+
+            // Ignore menu if menu is not available(Implicit Cancellation by Canteen)
             if (foodMenu.get(menuName) == null) {
-                foodMenu[menuName] = 0
+                this.chairs += chairUsed
+                println 'Order ditolak karena stok bahan baku tidak ada'
+                break
             }
-            foodMenu[menuName] += menuCount
+            // Else
+            // Iterate ingredients of the menu
+            for (ingredient in foodMenu[menuName].ingredients) {
+                // check if every ingredient stock is exist
+                if (ingredientStock.get(ingredient.name) == null) {
+                    println 'Order ditolak karena stok bahan baku tidak ada'
+                    isIgnore = true
+                    break
+                }
+                if (ingredientStock[ingredient.name] < ingredient.amount * menuCount) {
+                    isIgnore = true
+                    println 'Order ditolak karena stok bahan baku tidak cukup'
+                    break
+                }
+            }
+            if (isIgnore) {
+                isIgnore = false
+                this.chairs += chairUsed
+                break
+            }
+            // If every ingredient stock is exist
+            for (ingredient in foodMenu[menuName].ingredients) {
+                // update stock
+                ingredientStock[ingredient.name] -= ingredient.amount * menuCount
+            }
+
+            // define cost
+            int menuCost = foodMenu[menuName].cost * menuCount
 
             transactionLog.last().items << new TransactionItem(
                 name: menuName,
                 amount: menuCount,
-                // dummy value
-                costPerItem: 1000
+                costPerItem: menuCost
             )
             
         }
@@ -334,6 +364,17 @@ class Canteen {
         println writer
         canteen.transactionLog.clear()
    }
+
+   def getPrintRemainder() {
+       doPrintRemainder(this)
+   }
+
+   private static doPrintRemainder(canteen) {
+        println '==== Stock remained ===='
+        canteen.ingredientStock.each { k, v ->
+            println "${k} - ${v}"
+        }
+   }
     
     def methodMissing(String methodName, args) {
         System.out.println(methodName)
@@ -345,6 +386,7 @@ Canteen.process {
     stock {
         buy "rice", 100 at 1000 each
         buy "chicken meat", 10 at 10000 total
+        buy "ketchup", 100 at 1000 each
         dump "rice", 50
         print
     }
@@ -352,26 +394,24 @@ Canteen.process {
     menu {
         add "nasi goreng", {
             ingredient "rice", 10
-            ingredient "soy sauce", 5
             price 1000
         }
         
-        add "nasi bakar", {
-            ingredient "rice", 10
-            ingredient "soy sauce", 5
-            price 1000
-        }
-
-        print
-        //delete "nasi bakar"
+        // delete "nasi bakar"
     }
 
-//    order {
-//        of 2
-//        "nasi goreng" 2
-//        "es teh" 3
-//        dinein
-//    }
+    order {
+        of 2
+        "nasi goreng" 6
+        dinein
+    }
+    order {
+        of 2
+        "nasi goreng" 6
+        dinein
+    }
+
+    printRemainder
     
-    audit
+    // audit
 }
