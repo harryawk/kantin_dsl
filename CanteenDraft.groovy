@@ -103,6 +103,7 @@ class Food {
     int cost
     
     def ingredient(name, amount){
+        name = name.toLowerCase()
         ingredients << (new FoodIngredient(name:name,amount:amount))
     }
     
@@ -204,6 +205,9 @@ class Canteen {
         name = name.toLowerCase()
         if(foodMenu.get(name) == null) {
             foodMenu[name] = food
+            println("DONE: " + name + " has been added")
+        } else {
+            println("ERROR: " + name + " is already in a menu")
         }
     }
     
@@ -211,6 +215,9 @@ class Canteen {
         name = name.toLowerCase()
         if(foodMenu.get(name) != null) {
             foodMenu.remove(name)
+            println("DONE: " + name + " has been deleted")
+        } else {
+            println("ERROR: " + name + " does not exist in menu")
         }
     }
     
@@ -322,7 +329,7 @@ Canteen.process {
             price 1000
         }
         
-        delete "nasi goreng"
+        delete "nasi bakar"
     }
 
     order {
