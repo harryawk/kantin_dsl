@@ -3,7 +3,6 @@
 - 13514036 Harry Alvin Waidan Kefas
 - 13514104 Fairuz Astra Pratama
 
-## Grammar
 Untuk memudahkan pemahaman terhadap dsl yang kami buat. Akan ditampilkan contoh penggunaanya.
 
 	Canteen.process {
@@ -34,7 +33,7 @@ Untuk memudahkan pemahaman terhadap dsl yang kami buat. Akan ditampilkan contoh 
 	    audit
 	}
 
-Pada source code di atas dapat dilihat proses kantin yang datangani berupa manajemen stok, manajemen menu dan pemesanan.
+Pada source code di atas dapat dilihat proses kantin yang datangani berupa manajemen stok, manajemen menu, pemesanan dan pencatatan transaksi.
 
 ### Manajemen Stok
 Stok merupakan pasangan nama dan jumlah bahan baku yang disimpan di kantin, dimana nama merupakan *identifier* yang akan digunakan untuk mengaksesnya. Manajemen stok dapat dilaksanakan dengan menuliskan perintah di dalam scope "stock" seperti berikut
@@ -75,7 +74,53 @@ Berikut adalah contoh penggunaan fitur manajemen stok,
 	</stock>
 
 ### Manajemen Menu
-Menu merupakan daftar makanan atau minuman yang dijual oleh kantin. Tiap makanan dan minuman akan diberitahu bahan-bahan yang akan digunakan beserta harga dari makanan tersebut. Pada DSL yang dibuat, kita dapat menambah makanan ke menu dan menghapus makanan dari menu.
+Menu merupakan daftar makanan atau minuman yang dijual oleh kantin. Tiap makanan dan minuman akan diberitahu bahan-bahan yang akan digunakan beserta harga dari makanan tersebut. Pada tiap makanan dan minuman juga terdapat nama sebagai *identifier* yang digunakan untuk mengaksesnya. Manajemen menu dapat dilaksanakan dengan menuliskan perintah di dalam scope "menu" seperti berikut
+    
+    menu {
+        // Input command here
+    }
+
+Ada tiga jenis operasi yang dapat dilakukan dalam scope "menu", diantaranya:
+
+1. **Penambahan makanan pada menu**, untuk menambahkan makanan ke dalam daftar menu. Cara pemanggilannya:
+
+        add <<Food_Name>>, {
+            ingredient <<Ingredient_Name>>, <<Amount>>
+            ingredient <<Ingredient_Name>>, <<Amount>>
+            ...
+            ingredient <<Ingredient_Name>>, <<Amount>>
+            price <<Price>>
+        }
+
+2. **Penghapusan makanan dari menu**, untuk menghapus makanan dari daftar menu. Cara pemanggilannya:
+        
+        delete <<Food_Name>>
+
+3. **Pengecekan menu**, untuk mencetak nama, bahan baku dan harga dari suatu makanan atau minuman.
+
+        print
+
+Berikut adalah contoh penggunaan fitur manajemen menu,
+
+    menu {
+        
+        add "nasi goreng", {            //Menambahkan nasi goreng ke menu
+            ingredient "rice", 10       //Bahan nasi goreng
+            ingredient "soy sauce", 5   //Bahan nasi goreng
+            price 1000                  //Harga nasi goreng
+        }
+        
+        add "nasi bakar", {
+            ingredient "rice", 10
+            ingredient "soy sauce", 5
+            price 1000
+        }
+        
+        delete "nasi bakar"             // Mengahapus nasi goreng dari menu
+
+        print                           //Mngeprint menu
+    }
+
 
 ### Pemesanan
 tulis di sini

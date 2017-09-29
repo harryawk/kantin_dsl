@@ -119,6 +119,33 @@ class Food {
     def delete(name) {
         canteen.deleteFoodInMenu(name)
     }
+
+    def getPrint() {
+        doPrint(canteen)
+    }
+    private static doPrint(canteen) {
+        def writer = new StringWriter()
+        def xml = new MarkupBuilder(writer)
+        
+        xml.menu {
+            for(e in canteen.foodMenu) {
+                "Food" {
+                    "Name" "${e.key}"
+                    "Ingredients" {
+                        for(ing in e.value.ingredients) {
+                            "Ingredient" {
+                                "Name" "${ing.name}"
+                                "Amount" "${ing.amount}"
+                            } 
+                        }   
+                    }
+                    "Price" "${e.value.cost}"
+                }
+            }
+        }
+        
+        println writer
+   }
 }
 
 class Canteen {
@@ -329,15 +356,22 @@ Canteen.process {
             price 1000
         }
         
-        delete "nasi bakar"
+        add "nasi bakar", {
+            ingredient "rice", 10
+            ingredient "soy sauce", 5
+            price 1000
+        }
+
+        print
+        //delete "nasi bakar"
     }
 
-    order {
-        of 2
-        "nasi goreng" 2
-        "es teh" 3
-        dinein
-    }
+//    order {
+//        of 2
+//        "nasi goreng" 2
+//        "es teh" 3
+//        dinein
+//    }
     
     audit
 }
