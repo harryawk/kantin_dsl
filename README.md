@@ -124,3 +124,10 @@ Berikut adalah contoh penggunaan fitur manajemen menu,
 
 ### Pemesanan
 Pemesanan / *order* merupakan daftar makanan atau minuman yang dipesan / di-*order* oleh pelanggan. Suatu pemesanan / *order* memiliki jenis, diantaranya *takeaway* dan *dine-in*. Pemesanan / *order* jenis *dine-in* harus memberitahukan jumlah tempat makan yang hendak digunakan.
+
+### Manajemen Transaksi
+Transaksi merupakan daftar pembayaran yang dilakukan oleh pelanggan dan pembayaran untuk bahan baku. Cara pemanggilannya:
+
+    Canteen.process {
+        Audit
+    }

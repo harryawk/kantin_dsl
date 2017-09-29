@@ -416,6 +416,13 @@ Canteen.process {
         print
     }
 
+    order {
+        of 2
+        "nasi goreng" 2
+        "es teh" 3
+        dinein
+    }
+
     printRemainder
     
     // audit
