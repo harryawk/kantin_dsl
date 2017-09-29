@@ -33,7 +33,7 @@ Canteen.process {
     audit
 }
 ```
-Pada source code di atas dapat dilihat proses kantin yang datangani berupa manajemen stok, manjamen menu dan pemesanan.
+Pada source code di atas dapat dilihat proses kantin yang datangani berupa manajemen stok, manajemen menu dan pemesanan.
 
 ### Manajemen Stok
 tulis di sini
