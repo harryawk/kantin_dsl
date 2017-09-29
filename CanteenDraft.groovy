@@ -98,7 +98,6 @@ class FoodIngredient {
 }
 
 class Food {
-    Canteen canteen
     List<FoodIngredient> ingredients = []
     int cost
     
@@ -111,11 +110,19 @@ class Food {
         cost = amount
     }
     
+}
+
+class Menu {
+    Canteen canteen
+
     def add(name, closure){
+        Food f = new Food()
+        closure.delegate = f
+        closure.resolveStrategy = Closure.DELEGATE_ONLY
         closure.call()
-        canteen.addFoodToMenu(name,this)
+        canteen.addFoodToMenu(name,f)
     }
-    
+
     def delete(name) {
         canteen.deleteFoodInMenu(name)
     }
@@ -123,6 +130,7 @@ class Food {
     def getPrint() {
         doPrint(canteen)
     }
+
     private static doPrint(canteen) {
         def writer = new StringWriter()
         def xml = new MarkupBuilder(writer)
@@ -221,8 +229,8 @@ class Canteen {
     }
     
     def menu(closure) {
-        Food f = new Food(canteen:this)
-        closure.delegate = f
+        Menu m = new Menu(canteen:this)
+        closure.delegate = m
         closure.resolveStrategy = Closure.DELEGATE_ONLY
         
         closure.call()
@@ -361,9 +369,10 @@ Canteen.process {
             ingredient "soy sauce", 5
             price 1000
         }
+        
+        //delete "nasi bakar"
 
         print
-        //delete "nasi bakar"
     }
 
 //    order {
