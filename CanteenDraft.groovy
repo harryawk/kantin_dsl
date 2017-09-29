@@ -411,7 +411,7 @@ Canteen.process {
             price 1000
         }
         
-        //delete "nasi bakar"
+        delete "nasi bakar"
 
         print
     }

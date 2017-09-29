@@ -3,6 +3,12 @@
 - 13514036 Harry Alvin Waidan Kefas
 - 13514104 Fairuz Astra Pratama
 
+Pada kesempatan kali ini, kami membuat dsl untuk kantin yang ada di ITB menggunakan bahasa Groovy. DSL yang kami buat terbatas dengan :
+1. Manajemen Stok
+2. Manajemen Menu
+3. Pemesanan
+4. Pencatatan Transaksi.
+
 Untuk memudahkan pemahaman terhadap dsl yang kami buat. Akan ditampilkan contoh penggunaanya.
 
 	Canteen.process {
@@ -33,7 +39,11 @@ Untuk memudahkan pemahaman terhadap dsl yang kami buat. Akan ditampilkan contoh 
 	    audit
 	}
 
-Pada source code di atas dapat dilihat proses kantin yang datangani berupa manajemen stok, manajemen menu, pemesanan dan pencatatan transaksi.
+Pada source code di atas, perintah untuk menjalankan 4 poin yang menjadi batasan dapat dilakukan dengan menuliskannya di dalam scope "Canteen.process" seperti berikut
+
+        Canteen.process {
+	        // Input command here
+	    }
 
 ### Manajemen Stok
 Stok merupakan pasangan nama dan jumlah bahan baku yang disimpan di kantin, dimana nama merupakan *identifier* yang akan digunakan untuk mengaksesnya. Manajemen stok dapat dilaksanakan dengan menuliskan perintah di dalam scope "stock" seperti berikut
@@ -106,7 +116,6 @@ Berikut adalah contoh penggunaan fitur manajemen menu,
         
         add "nasi goreng", {            //Menambahkan nasi goreng ke menu
             ingredient "rice", 10       //Bahan nasi goreng
-            ingredient "soy sauce", 5   //Bahan nasi goreng
             price 1000                  //Harga nasi goreng
         }
         
@@ -121,13 +130,50 @@ Berikut adalah contoh penggunaan fitur manajemen menu,
         print                           //Mngeprint menu
     }
 
+    //Hasil eksekusi perintah di atas
+
+    DONE: nasi goreng has been added                                                                                       DONE: nasi bakar has been added
+    DONE: nasi bakar has been deleted
+    <menu>
+        <Food>
+            <Name>nasi goreng</Name>
+            <Ingredients>
+                <Ingredient>
+                    <Name>rice</Name>
+                    <Amount>10</Amount>
+                </Ingredient>
+            </Ingredients>
+            <Price>1000</Price>
+        </Food>
+    </menu>
+
 
 ### Pemesanan
 Pemesanan / *order* merupakan daftar makanan atau minuman yang dipesan / di-*order* oleh pelanggan. Suatu pemesanan / *order* memiliki jenis, diantaranya *takeaway* dan *dine-in*. Pemesanan / *order* jenis *dine-in* harus memberitahukan jumlah tempat makan yang hendak digunakan.
 
-### Manajemen Transaksi
-Transaksi merupakan daftar pembayaran yang dilakukan oleh pelanggan dan pembayaran untuk bahan baku. Cara pemanggilannya:
+### Pencatatan Transaksi
+Transaksi merupakan pembayaran yang dilakukan oleh pelanggan dan pembayaran untuk bahan baku. Pencatatan transaksi akan menampilkan seluruh daftar transaksi yang telah terjadi. Cara pemanggilannya:
 
     Canteen.process {
         Audit
     }
+
+Berikut salah satu hasil eksekusi dari perintah "audit"
+    
+    <log>
+        <transaction>
+            <type>Buying Ingredients</type>
+                <item>
+                    <name>rice</name>
+                    <amount>100</amount>
+                    <@cost>1000</@cost>
+                </item>
+                <item>
+                    <name>chicken meat</name>
+                    <amount>10</amount>
+                    <@cost>1000</@cost>
+                </item>
+                <timestamp>Fri Sep 29 14:20:48 ICT 2017</timestamp>
+                <total cost>110000</total cost>
+            </transaction>
+    </log>
